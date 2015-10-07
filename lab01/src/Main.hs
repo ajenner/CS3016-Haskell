@@ -43,10 +43,14 @@ getPosition (Player pt) = pt
 getPosition (Chest pt) = pt
 
 takesome :: Int -> [a] -> [a]
-takesome n = id
+takesome _ [] = []
+takesome 0 _  = []
+takesome n (x:xs) = x : takesome (n-1) xs
 
 dropsome :: Int -> [a] -> [a]
-dropsome n = id
+dropsome n xs | n <= 0 = xs
+dropsome _ []          = []
+dropsome n (x:xs)      = dropsome (n-1) xs
 
 chunksOf :: Int -> [a] -> [[a]]
 chunksOf n [] = []
@@ -57,7 +61,7 @@ createMap w h c =
   Map w h (chunksOf w $ map (read . (:[])) c)
 
 distance :: Point -> Point -> Int
-distance _ _ = 42
+distance (x,y) (a,b) = abs((x-a) + (y-b))
 
 {- Reading and Showing Tiles and Objects -}
 
@@ -78,10 +82,10 @@ instance Show Object where
 {- Handle a key press from the player -}
 
 handleInput :: Char -> Scene -> Scene
-handleInput 'w' (Scene map (Player (x, y)) objects) = (Scene map (Player (x, (y-1))) objects)
-handleInput 'a' (Scene map (Player (x, y)) objects) = (Scene map (Player ((x-1), y)) objects)
-handleInput 's' (Scene map (Player (x, y)) objects) = (Scene map (Player (x, (y+1))) objects)
-handleInput 'd' (Scene map (Player (x, y)) objects) = (Scene map (Player ((x+1), y)) objects)
+handleInput 'i' (Scene map (Player (x, y)) objects) = (Scene map (Player (x, (y-1))) objects)
+handleInput 'j' (Scene map (Player (x, y)) objects) = (Scene map (Player ((x-1), y)) objects)
+handleInput 'k' (Scene map (Player (x, y)) objects) = (Scene map (Player (x, (y+1))) objects)
+handleInput 'l' (Scene map (Player (x, y)) objects) = (Scene map (Player ((x+1), y)) objects)
 handleInput _ x = x
 
 {- Rendering the game world to the console -}
