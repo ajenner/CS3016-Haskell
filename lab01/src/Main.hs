@@ -61,7 +61,7 @@ createMap w h c =
   Map w h (chunksOf w $ map (read . (:[])) c)
 
 distance :: Point -> Point -> Int
-distance (x,y) (a,b) = abs((x-a) + (y-b))
+distance (x,y) (a,b) = abs((x-a)) + abs((y-b))
 
 {- Reading and Showing Tiles and Objects -}
 
